@@ -1,0 +1,4 @@
+[200] text/html;charset=UTF-8 https://ip.v2too.top/
+[200] application/speculationrules+json https://ip.v2too.top/cdn-cgi/speculation
+[200] text/javascript;charset=UTF-8 https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447
+[204] text/plain https://ip.v2too.top/cdn-cgi/rum?
