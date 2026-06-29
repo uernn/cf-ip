@@ -80,7 +80,7 @@ def main():
         )
 
         page.goto(URL, wait_until="networkidle", timeout=60000)
-        page.wait_for_timeout(3000)
+        page.wait_for_timeout(8000)
 
         for tab_text, isp_name in ISPS.items():
             try:
