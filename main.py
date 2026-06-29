@@ -145,24 +145,62 @@ def walk_json(obj):
             yield from walk_json(x)
 
 
-def extract_from_json_text(text, default_isp):
+def get_region_near_ip(block, ip):
+    lines = [x.strip() for x in block.splitlines() if x.strip()]
+
+    for index, line in enumerate(lines):
+        if line == ip:
+            for next_line in lines[index + 1:index + 5]:
+                if next_line.startswith("#"):
+                    continue
+                if re.search(IP_RE, next_line):
+                    continue
+                if next_line in ["下载速度", "网络延迟"]:
+                    continue
+                if "MB/s" in next_line or "ms" in next_line:
+                    continue
+
+                return next_line
+
+    return "未知"
+
+
+def extract_from_text(text, default_isp):
     items = []
+    seen = set()
 
-    try:
-        data = json.loads(text)
-    except Exception:
-        return items
+    # 按 #1 #2 #3 这种卡片编号切开
+    blocks = re.split(r"(?m)^\s*#\d+\s*$", text)
 
-    for obj in walk_json(data):
-        blob = flatten_json(obj)
+    for block in blocks:
+        ip_match = re.search(IP_RE, block)
 
-        if not re.search(IP_RE, blob):
+        if not ip_match:
             continue
 
-        items.extend(extract_from_text(blob, default_isp))
+        ip = ip_match.group(0)
+
+        if not is_valid_ip(ip):
+            continue
+
+        if ip in seen:
+            continue
+
+        seen.add(ip)
+
+        region = get_region_near_ip(block, ip)
+        delay = get_delay(block)
+        speed = get_speed(block)
+
+        items.append({
+            "ip": ip,
+            "region": region,
+            "isp": default_isp,
+            "delay": delay,
+            "speed": speed,
+        })
 
     return items
-
 
 def main():
     all_items = []
