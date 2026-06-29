@@ -277,12 +277,8 @@ def main():
     lines = []
 
     for i in result:
-        line = (
-            f'{i["ip"]}:443#'
-            f'{i["region"]} {i["isp"]}优选'
-            f'[{int(i["delay"])}ms {i["speed"]:.2f}MB/s]'
-        )
-        lines.append(line)
+    line = f'{i["ip"]}:443#{i["region"]}'
+    lines.append(line)
 
     if lines:
         Path(OUTPUT).write_text("\n".join(lines), encoding="utf-8")
