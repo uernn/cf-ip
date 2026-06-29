@@ -255,7 +255,7 @@ def main():
     Path("debug_network.txt").write_text("\n".join(network_logs), encoding="utf-8")
     Path("debug_text.txt").write_text("\n".join(page_text_logs), encoding="utf-8")
 
-    # 去重：同一个 IP 保留速度最高的
+        # 去重：同一个 IP 保留速度最高的
     best = {}
 
     for item in all_items:
@@ -276,25 +276,9 @@ def main():
 
     lines = []
 
-for i in result:
-    line = f'{i["ip"]}:443#{i["region"]}'
-    lines.append(line)
-
-if lines:
-    Path(OUTPUT).write_text("\n".join(lines), encoding="utf-8")
-    print(f"成功生成 {OUTPUT}，共 {len(lines)} 条")
-    print("\n".join(lines[:20]))
-else:
-    print("没有提取到 IP，没有覆盖 ipv4.txt。")
-    print("请查看 debug_network.txt、debug_text.txt、debug_screenshot.png。")
-
-if lines:
-    Path(OUTPUT).write_text("\n".join(lines), encoding="utf-8")
-    print(f"成功生成 {OUTPUT}，共 {len(lines)} 条")
-    print("\n".join(lines[:20]))
-else:
-    print("没有提取到 IP，没有覆盖 ipv4.txt。")
-    print("请查看 debug_network.txt、debug_text.txt、debug_screenshot.png。")
+    for i in result:
+        line = f'{i["ip"]}:443#{i["region"]}'
+        lines.append(line)
 
     if lines:
         Path(OUTPUT).write_text("\n".join(lines), encoding="utf-8")
